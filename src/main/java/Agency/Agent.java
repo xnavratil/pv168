@@ -7,7 +7,8 @@ import java.util.Date;
  */
 
 public class Agent {
-    private long id;
+    private Long id;
     private String name;
     private Date born;
+    private Date recruitmentDate;
 }

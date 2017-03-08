@@ -7,7 +7,7 @@ import java.util.Date;
  */
 
 public class Assign {
-    private long id;
+    private Long id;
     private Mission mission;
     private Agent assignedAgents;
     private Date start;
