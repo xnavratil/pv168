@@ -38,29 +38,29 @@ public class AgentManagerImplTest {
         Agent anotherAgent = newAgent("Sterling Archer", LocalDate.of(1990, 1, 1) ,LocalDate.of(2000, 1, 1));
         manager.createAgent(agent);
         manager.createAgent(anotherAgent);
-        Long graveId = agent.getId();
+        Long agentId = agent.getId();
 
-        agent = manager.findAgentById(graveId);
+        agent = manager.findAgentById(agentId);
         agent.setName("John Bond");
         manager.updateAgent(agent);
         assertEquals("John Bond", agent.getName());
         assertEquals(LocalDate.of(1970, 1, 1), agent.getBorn());
         assertEquals(LocalDate.of(1985, 1, 1), agent.getRecruitmentDate());
 
-        agent = manager.findAgentById(graveId);
+        agent = manager.findAgentById(agentId);
         agent.setBorn(LocalDate.of(1971, 1, 1));
         manager.updateAgent(agent);
         assertEquals("John Bond", agent.getName());
         assertEquals(LocalDate.of(1971, 1, 1), agent.getBorn());
         assertEquals(LocalDate.of(1985, 1, 1), agent.getRecruitmentDate());
 
-        agent = manager.findAgentById(graveId);
+        agent = manager.findAgentById(agentId);
         agent.setRecruitmentDate(LocalDate.of(1986, 1, 1));
         manager.updateAgent(agent);
         assertEquals("John Bond", agent.getName());
         assertEquals(LocalDate.of(1971, 1, 1), agent.getBorn());
         assertEquals(LocalDate.of(1986, 1, 1), agent.getRecruitmentDate());
-        
+
         assertDeepEquals(anotherAgent, manager.findAgentById(anotherAgent.getId()));
     }
 
