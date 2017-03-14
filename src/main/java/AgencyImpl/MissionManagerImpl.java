@@ -10,23 +10,17 @@ import java.util.List;
  */
 
 public class MissionManagerImpl implements MissionManager {
-    public void createMission(Mission newMission) {
+    public void createMission(Mission newMission) { throw new UnsupportedOperationException(); }
 
-    }
+    public void updateMission(Mission updatedMission) { throw new UnsupportedOperationException(); }
 
-    public void updateMission(Mission updatedMission) {
-
-    }
-
-    public void removeMission(Mission removedMission) {
-
-    }
+    public void removeMission(Mission removedMission) { throw new UnsupportedOperationException(); }
 
     public Mission findMissionById(long missionId) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public List<Mission> getAllMissions() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

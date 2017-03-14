@@ -12,22 +12,18 @@ import java.util.List;
 public class AssignManagerImpl implements AssignManager {
 
     public void createAssignment(Assign newAssignment) {
-
+        throw new UnsupportedOperationException();
     }
 
-    public void updateAssignment(Assign updatedAssignment) {
+    public void updateAssignment(Assign updatedAssignment) { throw new UnsupportedOperationException(); }
 
-    }
-
-    public void removeAssignment(Assign removedAssignment) {
-
-    }
+    public void removeAssignment(Assign removedAssignment) { throw new UnsupportedOperationException(); }
 
     public Assign findAssignmentById(long assignmentId) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public List<Assign> getAllAssignments() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

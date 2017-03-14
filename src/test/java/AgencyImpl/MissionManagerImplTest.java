@@ -1,5 +1,6 @@
 package AgencyImpl;
 
+import Agency.Mission;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import static org.junit.Assert.*;
 public class MissionManagerImplTest {
     @Before
     public void setUp() throws Exception {
-
+        Mission first = new Mission("Day-D","Preparation for Day-D", );
     }
 
     @Test
