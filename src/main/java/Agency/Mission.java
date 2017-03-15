@@ -12,15 +12,15 @@ public class Mission {
     private String info;
     private LocalDate issueDate;
 
+/*
     public Mission(String codename, String info, LocalDate issueDate) {
         this.codename = codename;
         this.info = info;
         this.issueDate = issueDate;
     }
+*/
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
     public void setId(Long id) {
         this.id = id;
