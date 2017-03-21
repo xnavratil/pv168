@@ -1,12 +1,15 @@
 package AgencyImpl;
 
 import Agency.Agent;
+import Agency.AgentBuilder;
 import org.junit.Test;
-import java.util.Date;
 import org.junit.Before;
-import java.time.LocalDate;
+import Agency.AgentManager;
 
-import static org.junit.Assert.*;
+import java.time.LocalDate;
+import java.util.function.Consumer;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Created by matusmacko on 8.3.17.
@@ -15,83 +18,129 @@ public class AgentManagerImplTest {
     private AgentManagerImpl manager;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         manager = new AgentManagerImpl();
     }
 
-    @Test
-    public void createAgent() throws Exception {
-        Agent agent = newAgent("James Bond", LocalDate.of(2017, 3, 1), LocalDate.of(2017, 3, 1));
-        manager.createAgent(agent);
+    private AgentBuilder ruthlessAgentBuilder() {
+        return new AgentBuilder()
+                .id(null)
+                .name("James Bond")
+                .born(LocalDate.of(1970, 9, 2))
+                .recruitmentDate(LocalDate.of(1990, 9, 2));
+    }
 
-        Long agentId = agent.getId();
-        assertNotNull(agentId);
-        Agent result = manager.findAgentById(agentId);
-        assertEquals(agent, result);
-        assertNotSame(agent, result);
-        assertDeepEquals(agent, result);
+    private AgentBuilder ultraAgentBuilder() {
+        return new AgentBuilder()
+                .id(null)
+                .name("Sherlock Holmes")
+                .born(LocalDate.of(1830, 9, 2))
+                .recruitmentDate(LocalDate.of(1850, 9, 2));
     }
 
     @Test
-    public void updateAgent() throws Exception {
-        Agent agent = newAgent("James Bond", LocalDate.of(1970, 1, 1), LocalDate.of(1985, 1, 1));
-        Agent anotherAgent = newAgent("Sterling Archer", LocalDate.of(1990, 1, 1) ,LocalDate.of(2000, 1, 1));
+    public void createAgent()  {
+        Agent firstAgent = ruthlessAgentBuilder().build();
+        manager.createAgent(firstAgent);
+
+        Long agentId = firstAgent.getId();
+        assertThat(agentId).isNotNull();
+
+        assertThat(manager.findAgentById(agentId))
+                .isNotSameAs(firstAgent)
+                .isEqualToComparingFieldByField(firstAgent);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createNullMission() {
+        manager.createAgent(null);
+    }
+
+    @Test
+    public void createAgentWithNullName() {
+        Agent agent = ruthlessAgentBuilder().name(null).build();
         manager.createAgent(agent);
+
+        assertThat(manager.findAgentById(agent.getId()))
+                .isNotNull()
+                .isEqualToComparingFieldByField(agent);
+    }
+
+    @Test
+    public void createAgentWithNullBorn() {
+        Agent agent = ruthlessAgentBuilder().born(null).build();
+        manager.createAgent(agent);
+
+        assertThat(manager.findAgentById(agent.getId()))
+                .isNotNull()
+                .isEqualToComparingFieldByField(agent);
+    }
+
+    @Test
+    public void createAgentWithNullRecruitmentDate() {
+        Agent agent = ruthlessAgentBuilder().recruitmentDate(null).build();
+        manager.createAgent(agent);
+
+        assertThat(manager.findAgentById(agent.getId()))
+                .isNotNull()
+                .isEqualToComparingFieldByField(agent);
+    }
+
+    private void testUpdateAgent(Consumer<Agent> updateOperation) {
+        Agent sourceAgent = ruthlessAgentBuilder().build();
+        Agent anotherAgent = ultraAgentBuilder().build();
+        manager.createAgent(sourceAgent);
         manager.createAgent(anotherAgent);
-        Long agentId = agent.getId();
 
-        agent = manager.findAgentById(agentId);
-        agent.setName("John Bond");
-        manager.updateAgent(agent);
-        assertEquals("John Bond", agent.getName());
-        assertEquals(LocalDate.of(1970, 1, 1), agent.getBorn());
-        assertEquals(LocalDate.of(1985, 1, 1), agent.getRecruitmentDate());
+        updateOperation.accept(sourceAgent);
 
-        agent = manager.findAgentById(agentId);
-        agent.setBorn(LocalDate.of(1971, 1, 1));
-        manager.updateAgent(agent);
-        assertEquals("John Bond", agent.getName());
-        assertEquals(LocalDate.of(1971, 1, 1), agent.getBorn());
-        assertEquals(LocalDate.of(1985, 1, 1), agent.getRecruitmentDate());
+        manager.updateAgent(sourceAgent);
+        assertThat(manager.findAgentById(sourceAgent.getId()))
+                .isEqualToComparingFieldByField(sourceAgent);
 
-        agent = manager.findAgentById(agentId);
-        agent.setRecruitmentDate(LocalDate.of(1986, 1, 1));
-        manager.updateAgent(agent);
-        assertEquals("John Bond", agent.getName());
-        assertEquals(LocalDate.of(1971, 1, 1), agent.getBorn());
-        assertEquals(LocalDate.of(1986, 1, 1), agent.getRecruitmentDate());
-
-        assertDeepEquals(anotherAgent, manager.findAgentById(anotherAgent.getId()));
+        assertThat(manager.findAgentById(anotherAgent.getId()))
+                .isEqualToComparingFieldByField(anotherAgent);
     }
 
     @Test
-    public void removeAgent() throws Exception {
-        Agent firstAgent = newAgent("James Bond", LocalDate.of(1970, 1, 1), LocalDate.of(1985, 1, 1));
-        Agent secondAgent = newAgent("Sterling Archer", LocalDate.of(1990, 1, 1) ,LocalDate.of(2000, 1, 1));
+    public void updateAgentName() {
+        testUpdateAgent(agent -> agent.setName("John Bond"));
+    }
+
+    @Test
+    public void updateAgentBorn() {
+        testUpdateAgent(agent -> agent.setBorn(LocalDate.of(1950, 9, 2)));
+    }
+
+    @Test
+    public void updateAgentRecruitmentDate() {
+        testUpdateAgent(agent -> agent.setRecruitmentDate(LocalDate.of(1960, 9, 2)));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updateNullAgent() {
+        manager.updateAgent(null);
+    }
+
+    @Test
+    public void removeAgent() {
+        Agent firstAgent = ruthlessAgentBuilder().build();
+        Agent secondAgent = ultraAgentBuilder().build();
         manager.createAgent(firstAgent);
         manager.createAgent(secondAgent);
 
-        assertNotNull(manager.findAgentById(firstAgent.getId()));
-        assertNotNull(manager.findAgentById(secondAgent.getId()));
+        assertThat(manager.findAgentById(firstAgent.getId())).isNotNull();
+        assertThat(manager.findAgentById(secondAgent.getId())).isNotNull();
 
         manager.removeAgent(firstAgent);
 
-        assertNull(manager.findAgentById(firstAgent.getId()));
-        assertNotNull(manager.findAgentById(secondAgent.getId()));
+        assertThat(manager.findAgentById(firstAgent.getId())).isNull();
+        assertThat(manager.findAgentById(secondAgent.getId())).isNotNull();
     }
 
-    private static Agent newAgent(String name, LocalDate born, LocalDate recruitmentDate) {
-        Agent agent = new Agent();
-        agent.setName(name);
-        agent.setBorn(born);
-        agent.setRecruitmentDate(recruitmentDate);
-        return agent;
+    @Test(expected = IllegalArgumentException.class)
+    public void deleteNullAgent() {
+        manager.removeAgent(null);
     }
 
-    private void assertDeepEquals(Agent expected, Agent actual) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getBorn(), actual.getBorn());
-        assertEquals(expected.getRecruitmentDate(), actual.getRecruitmentDate());
-    }
 }
