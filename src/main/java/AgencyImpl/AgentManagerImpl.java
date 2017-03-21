@@ -11,22 +11,22 @@ import java.util.List;
 
 public class AgentManagerImpl implements AgentManager {
     public void createAgent(Agent newAgent) {
-
+        throw new UnsupportedOperationException();
     }
 
     public void updateAgent(Agent updatedAgent) {
-
+        throw new UnsupportedOperationException();
     }
 
     public void removeAgent(Agent removeAgent) {
-
+        throw new UnsupportedOperationException();
     }
 
     public Agent findAgentById(long agentId) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public List<Agent> getAllAgents() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

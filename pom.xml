@@ -12,7 +12,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-
     <build>
         <plugins>
             <!-- Java language version -->
@@ -33,7 +32,6 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -41,7 +39,12 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
-
-
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <!-- use 2.6.0 for Java 7 projects -->
+            <version>3.6.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>pa
 </project>
