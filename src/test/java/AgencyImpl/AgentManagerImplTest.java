@@ -142,5 +142,4 @@ public class AgentManagerImplTest {
     public void deleteNullAgent() {
         manager.removeAgent(null);
     }
-
 }
