@@ -46,5 +46,5 @@
             <version>3.6.2</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>pa
+    </dependencies>
 </project>

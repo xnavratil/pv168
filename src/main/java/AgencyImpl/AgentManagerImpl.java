@@ -21,7 +21,6 @@ public class AgentManagerImpl implements AgentManager {
     public void removeAgent(Agent removeAgent) {
         throw new UnsupportedOperationException();
     }
-
     public Agent findAgentById(long agentId) {
         throw new UnsupportedOperationException();
     }
