@@ -1,3 +1,5 @@
+connect 'jdbc:derby://localhost:1527/database;create=true;user=admin;password=password';
+
 CREATE TABLE MISSION (
     ID BIGINT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     CODENAME VARCHAR(50),
@@ -19,3 +21,6 @@ CREATE TABLE ASSIGN (
     START DATE,
     EXPECTED_END DATE
 );
+
+disconnect;
+exit;
