@@ -22,7 +22,7 @@ public class MissionManagerImplTest {
         manager = new MissionManagerImpl();
     }
 
-    private MissionBuilder ruthlessMissionBuilder() {
+    static MissionBuilder ruthlessMissionBuilder() {
         return new MissionBuilder()
                 .id(null)
                 .codename("Ruthless")
@@ -30,7 +30,7 @@ public class MissionManagerImplTest {
                 .issueDate(LocalDate.of(1940, 9, 2));
     }
 
-    private MissionBuilder ultraMissionBuilder() {
+    static MissionBuilder ultraMissionBuilder() {
         return new MissionBuilder()
                 .id(null)
                 .codename("ULTRA")
@@ -124,7 +124,6 @@ public class MissionManagerImplTest {
     
     @Test
     public void removeMission() {
-
         Mission m1 = ruthlessMissionBuilder().build();
         Mission m2 = ultraMissionBuilder().build();
         manager.createMission(m1);

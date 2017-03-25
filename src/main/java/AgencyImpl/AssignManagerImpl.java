@@ -1,6 +1,6 @@
 package AgencyImpl;
 
-import Agency.Assign;
+import Agency.Assignment;
 import Agency.AssignManager;
 
 import java.util.List;
@@ -11,19 +11,19 @@ import java.util.List;
 
 public class AssignManagerImpl implements AssignManager {
 
-    public void createAssignment(Assign newAssignment) {
+    public void createAssignment(Assignment newAssignment) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateAssignment(Assign updatedAssignment) { throw new UnsupportedOperationException(); }
+    public void updateAssignment(Assignment updatedAssignment) { throw new UnsupportedOperationException(); }
 
-    public void removeAssignment(Assign removedAssignment) { throw new UnsupportedOperationException(); }
+    public void removeAssignment(Assignment removedAssignment) { throw new UnsupportedOperationException(); }
 
-    public Assign findAssignmentById(long assignmentId) {
+    public Assignment findAssignmentById(long assignmentId) {
         throw new UnsupportedOperationException();
     }
 
-    public List<Assign> getAllAssignments() {
+    public List<Assignment> getAllAssignments() {
         throw new UnsupportedOperationException();
     }
 }

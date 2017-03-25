@@ -22,7 +22,7 @@ public class AgentManagerImplTest {
         manager = new AgentManagerImpl();
     }
 
-    private AgentBuilder ruthlessAgentBuilder() {
+    static AgentBuilder ruthlessAgentBuilder() {
         return new AgentBuilder()
                 .id(null)
                 .name("James Bond")
@@ -30,12 +30,12 @@ public class AgentManagerImplTest {
                 .recruitmentDate(LocalDate.of(1990, 9, 2));
     }
 
-    private AgentBuilder ultraAgentBuilder() {
+    static AgentBuilder ultraAgentBuilder() {
         return new AgentBuilder()
                 .id(null)
                 .name("Sherlock Holmes")
-                .born(LocalDate.of(1830, 9, 2))
-                .recruitmentDate(LocalDate.of(1850, 9, 2));
+                .born(LocalDate.of(1920, 2, 10)) //.born(LocalDate.of(1830, 9, 2))
+                .recruitmentDate(LocalDate.of(1941, 9, 2));//.recruitmentDate(LocalDate.of(1850, 9, 2));
     }
 
     @Test

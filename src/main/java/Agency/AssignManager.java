@@ -7,9 +7,9 @@ import java.util.List;
  */
 
 public interface AssignManager {
-    void createAssignment(Assign newAssignment);
-    void updateAssignment(Assign updatedAssignment);
-    void removeAssignment(Assign removedAssignment);
-    Assign findAssignmentById(long assignmentId);
-    List<Assign> getAllAssignments();
+    void createAssignment(Assignment newAssignment);
+    void updateAssignment(Assignment updatedAssignment);
+    void removeAssignment(Assignment removedAssignment);
+    Assignment findAssignmentById(long assignmentId);
+    List<Assignment> getAllAssignments();
 }
