@@ -3,11 +3,18 @@ package AgencyImpl;
 import Agency.Agent;
 import Agency.AgentBuilder;
 import org.junit.Test;
+import javax.sql.DataSource;
+import org.junit.rules.ExpectedException;
 import org.junit.Before;
+import java.sql.SQLException;
+import org.apache.derby.jdbc.EmbeddedDataSource;
 import Agency.AgentManager;
-
+import Exceptions.ValidationException;
 import java.time.LocalDate;
 import java.util.function.Consumer;
+import Utils.DBUtils;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -16,11 +23,41 @@ import static org.assertj.core.api.Assertions.*;
  */
 public class AgentManagerImplTest {
     private AgentManagerImpl manager;
+    private DataSource ds;
+
+    // ExpectedException is one possible mechanisms for testing if expected
+    // exception is thrown. See createGraveWithExistingId() for usage example.
+    @Rule
+    // attribute annotated with @Rule annotation must be public :-(
+    public ExpectedException expectedException = ExpectedException.none();
+
+    //--------------------------------------------------------------------------
+    // Test initialization
+    //--------------------------------------------------------------------------
+
+    private static DataSource prepareDataSource() throws SQLException {
+        EmbeddedDataSource ds = new EmbeddedDataSource();
+        // we will use in memory database
+        ds.setDatabaseName("memory:agentmanager-test");
+        // database is created automatically if it does not exist yet
+        ds.setCreateDatabase("create");
+        return ds;
+    }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws SQLException {
+        ds = prepareDataSource();
+        DBUtils.executeSqlScript(ds,AgentManager.class.getResource("/createTables.sql"));
         manager = new AgentManagerImpl();
+        manager.setDataSource(ds);
     }
+
+    @After
+    public void tearDown() throws SQLException {
+        // Drop tables after each test
+        DBUtils.executeSqlScript(ds,AgentManager.class.getResource("/dropTables.sql"));
+    }
+
 
     private AgentBuilder ruthlessAgentBuilder() {
         return new AgentBuilder()
@@ -52,38 +89,29 @@ public class AgentManagerImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createNullMission() {
+    public void createNullAgent() {
         manager.createAgent(null);
     }
 
     @Test
     public void createAgentWithNullName() {
         Agent agent = ruthlessAgentBuilder().name(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createAgent(agent);
-
-        assertThat(manager.findAgentById(agent.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(agent);
     }
 
     @Test
     public void createAgentWithNullBorn() {
         Agent agent = ruthlessAgentBuilder().born(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createAgent(agent);
-
-        assertThat(manager.findAgentById(agent.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(agent);
     }
 
     @Test
     public void createAgentWithNullRecruitmentDate() {
         Agent agent = ruthlessAgentBuilder().recruitmentDate(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createAgent(agent);
-
-        assertThat(manager.findAgentById(agent.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(agent);
     }
 
     private void testUpdateAgent(Consumer<Agent> updateOperation) {

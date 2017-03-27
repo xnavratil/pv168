@@ -1,5 +1,7 @@
 package Agency;
 
+import Exceptions.ValidationException;
+
 import java.util.List;
 
 /**
@@ -7,9 +9,9 @@ import java.util.List;
  */
 
 public interface AgentManager {
-    void createAgent(Agent newAgent);
+    void createAgent(Agent newAgent) throws ValidationException;
     void updateAgent(Agent updatedAgent);
     void removeAgent(Agent removeAgent);
-    Agent findAgentById(long agentId);
+    Agent findAgentById(Long agentId);
     List<Agent> getAllAgents();
 }
