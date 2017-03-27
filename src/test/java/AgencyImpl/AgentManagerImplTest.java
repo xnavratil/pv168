@@ -170,4 +170,20 @@ public class AgentManagerImplTest {
     public void deleteNullAgent() {
         manager.removeAgent(null);
     }
+
+    @Test
+    public void findAllAgents() {
+
+        assertThat(manager.getAllAgents()).isEmpty();
+
+        Agent a1 = ruthlessAgentBuilder().build();
+        Agent a2 = ultraAgentBuilder().build();
+
+        manager.createAgent(a1);
+        manager.createAgent(a2);
+
+        assertThat(manager.getAllAgents())
+                .usingFieldByFieldElementComparator()
+                .containsOnly(a1,a2);
+    }
 }
