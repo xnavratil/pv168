@@ -2,12 +2,19 @@ package AgencyImpl;
 
 import Agency.Mission;
 import Agency.MissionBuilder;
-import Agency.MissionManager;
-import org.junit.Before;
 import org.junit.Test;
-
+import javax.sql.DataSource;
+import org.junit.rules.ExpectedException;
+import org.junit.Before;
+import java.sql.SQLException;
+import org.apache.derby.jdbc.EmbeddedDataSource;
+import Agency.MissionManager;
+import Exceptions.ValidationException;
 import java.time.LocalDate;
 import java.util.function.Consumer;
+import Utils.DBUtils;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -15,18 +22,44 @@ import static org.assertj.core.api.Assertions.*;
  * Created by pnavratil on 3/8/17.
  */
 public class MissionManagerImplTest {
-    private MissionManager manager;
+    private DataSource dataSource;
+    private MissionManagerImpl manager;
+
+    @Rule
+    // attribute annotated with @Rule annotation must be public :-(
+    public ExpectedException expectedException = ExpectedException.none();
+
+    //--------------------------------------------------------------------------
+    // Test initialization
+    //--------------------------------------------------------------------------
+
+    private static DataSource prepareDataSource() throws SQLException {
+        EmbeddedDataSource ds = new EmbeddedDataSource();
+        // we will use in memory database
+        ds.setDatabaseName("memory:missionmanager-test");
+        // database is created automatically if it does not exist yet
+        ds.setCreateDatabase("create");
+        return ds;
+    }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws SQLException {
+        dataSource = prepareDataSource();
+        DBUtils.executeSqlScript(dataSource, MissionManager.class.getResource("/createTables.sql"));
         manager = new MissionManagerImpl();
+        manager.setDataSource(dataSource);
+    }
+
+    @After
+    public void tearDown() throws SQLException {
+        DBUtils.executeSqlScript(dataSource, MissionManager.class.getResource("/dropTables.sql"));
     }
 
     static MissionBuilder ruthlessMissionBuilder() {
         return new MissionBuilder()
                 .id(null)
                 .codename("Ruthless")
-                .info("Admiralty plan to capture an Enigma encryption machine.")
+                .info("Admiralty plan to capture an Enigma machine.")
                 .issueDate(LocalDate.of(1940, 9, 2));
     }
 
@@ -59,31 +92,22 @@ public class MissionManagerImplTest {
     @Test
     public void createMissionWithNullCodename() {
         Mission mission = ruthlessMissionBuilder().codename(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createMission(mission);
-
-        assertThat(manager.findMissionById(mission.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(mission);
     }
 
     @Test
     public void createMissionWithNullInfo() {
         Mission mission = ruthlessMissionBuilder().info(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createMission(mission);
-
-        assertThat(manager.findMissionById(mission.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(mission);
     }
 
     @Test
     public void createMissionWithNullIssueDate() {
         Mission mission = ruthlessMissionBuilder().issueDate(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createMission(mission);
-
-        assertThat(manager.findMissionById(mission.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(mission);
     }
 
     private void testUpdateMission(Consumer<Mission> updateOperation) {

@@ -2,11 +2,18 @@ package AgencyImpl;
 
 import Agency.Assignment;
 import Agency.AssignmentBuilder;
-import org.junit.Before;
 import org.junit.Test;
-
+import javax.sql.DataSource;
+import org.junit.rules.ExpectedException;
+import org.junit.Before;
+import java.sql.SQLException;
+import org.apache.derby.jdbc.EmbeddedDataSource;
+import Agency.AssignmentManager;
+import Exceptions.ValidationException;
 import java.time.LocalDate;
 import java.util.function.Consumer;
+import Utils.DBUtils;
+import org.junit.*;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -14,11 +21,31 @@ import static org.assertj.core.api.Assertions.*;
  * Created by pnavratil on 3/15/17.
  */
 public class AssignmentManagerImplTest {
-    private AssignManagerImpl manager;
+    private AssignmentManagerImpl manager;
+    private DataSource dataSource;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
+    private static DataSource prepareDataSource() throws SQLException {
+        EmbeddedDataSource ds = new EmbeddedDataSource();
+        ds.setDatabaseName("memory:assignmentmanager-test");
+        ds.setCreateDatabase("create");
+        return ds;
+    }
 
     @Before
     public void setUp() throws Exception {
-        manager = new AssignManagerImpl();
+        dataSource = prepareDataSource();
+        DBUtils.executeSqlScript(dataSource, AssignmentManager.class.getResource("/createTables.sql"));
+        manager = new AssignmentManagerImpl();
+        manager.setDataSource(dataSource);
+    }
+
+    @After
+    public void tearDown() throws SQLException {
+        // Drop tables after each test
+        DBUtils.executeSqlScript(dataSource, AssignmentManager.class.getResource("/dropTables.sql"));
     }
 
     @Test
@@ -42,41 +69,29 @@ public class AssignmentManagerImplTest {
     @Test
     public void createAssignWithNullAgent() {
         Assignment assignment = ruthlessAssignmentBuilder().agent(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createAssignment(assignment);
-
-        assertThat(manager.findAssignmentById(assignment.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(assignment);
     }
 
     @Test
     public void createAssignWithNullMission() {
         Assignment assignment = ruthlessAssignmentBuilder().mission(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createAssignment(assignment);
-
-        assertThat(manager.findAssignmentById(assignment.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(assignment);
     }
 
     @Test
     public void createAssignWithNullStart() {
         Assignment assignment = ruthlessAssignmentBuilder().start(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createAssignment(assignment);
-
-        assertThat(manager.findAssignmentById(assignment.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(assignment);
     }
 
     @Test
     public void createAssignWithNullExpectedEnd() {
         Assignment assignment = ruthlessAssignmentBuilder().expectedEnd(null).build();
+        expectedException.expect(ValidationException.class);
         manager.createAssignment(assignment);
-
-        assertThat(manager.findAssignmentById(assignment.getId()))
-                .isNotNull()
-                .isEqualToComparingFieldByField(assignment);
     }
 
     private void testUpdateAssignment(Consumer<Assignment> updateOperation) {
@@ -97,7 +112,7 @@ public class AssignmentManagerImplTest {
 
     @Test
     public void updateAssignmentAgent() {
-        testUpdateAssignment((assignment) -> assignment.setAssignedAgents(AgentManagerImplTest.ultraAgentBuilder().build()));
+        testUpdateAssignment((assignment) -> assignment.setAssignedAgent(AgentManagerImplTest.ultraAgentBuilder().build()));
     }
 
     @Test
@@ -130,11 +145,18 @@ public class AssignmentManagerImplTest {
         assertThat(manager.findAssignmentById(m1.getId())).isNull();
         assertThat(manager.findAssignmentById(m2.getId())).isNotNull();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void removeNullAssignment() {
+        manager.removeAssignment(null);
+    }
+
+
     private AssignmentBuilder ruthlessAssignmentBuilder() {
         return new AssignmentBuilder()
                 .id(null)
-                .agent(AgentManagerImplTest.ruthlessAgentBuilder().build())
-                .mission(MissionManagerImplTest.ruthlessMissionBuilder().build())
+                .agent(AgentManagerImplTest.ruthlessAgentBuilder().id(1L).build())
+                .mission(MissionManagerImplTest.ruthlessMissionBuilder().id(1L).build())
                 .start(LocalDate.of(1940, 9, 3))
                 .expectedEnd(LocalDate.of(1941, 9, 3));
     }
@@ -142,11 +164,9 @@ public class AssignmentManagerImplTest {
     private AssignmentBuilder ultraAssignmentBuilder() {
         return new AssignmentBuilder()
                 .id(null)
-                .agent(AgentManagerImplTest.ultraAgentBuilder().build())
-                .mission(MissionManagerImplTest.ultraMissionBuilder().build())
+                .agent(AgentManagerImplTest.ultraAgentBuilder().id(2L).build())
+                .mission(MissionManagerImplTest.ultraMissionBuilder().id(2L).build())
                 .start(LocalDate.of(1941, 6, 2))
                 .expectedEnd(LocalDate.of(1943, 6, 2));
     }
-
-
 }

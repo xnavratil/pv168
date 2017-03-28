@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class Assignment {
     private Long id;
     private Mission mission;
-    private Agent assignedAgents;
+    private Agent assignedAgent;
     private LocalDate start;
     private LocalDate expectedEnd;
 
@@ -29,12 +29,12 @@ public class Assignment {
         this.mission = mission;
     }
 
-    public Agent getAssignedAgents() {
-        return assignedAgents;
+    public Agent getAssignedAgent() {
+        return assignedAgent;
     }
 
-    public void setAssignedAgents(Agent assignedAgents) {
-        this.assignedAgents = assignedAgents;
+    public void setAssignedAgent(Agent assignedAgent) {
+        this.assignedAgent = assignedAgent;
     }
 
     public LocalDate getStart() {

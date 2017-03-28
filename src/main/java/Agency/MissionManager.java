@@ -10,7 +10,7 @@ public interface MissionManager {
     void createMission(Mission newMission);
     void updateMission(Mission updatedMission);
     void removeMission(Mission removedMission);
-    Mission findMissionById(long missionId);
+    Mission findMissionById(Long missionId);
     List<Mission> getAllMissions();
 
 }
