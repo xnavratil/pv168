@@ -1,11 +1,7 @@
 package Agency;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-/**
- * Created by Navratil Peter (xnavrat8@mail.muni.cz) on ${DATE}.
- */
 
 public class Agent {
     private Long id;
