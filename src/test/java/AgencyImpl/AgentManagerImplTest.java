@@ -25,8 +25,7 @@ public class AgentManagerImplTest {
     private AgentManagerImpl manager;
     private DataSource ds;
 
-    // ExpectedException is one possible mechanisms for testing if expected
-    // exception is thrown. See createGraveWithExistingId() for usage example.
+
     @Rule
     // attribute annotated with @Rule annotation must be public :-(
     public ExpectedException expectedException = ExpectedException.none();

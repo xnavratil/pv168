@@ -85,7 +85,7 @@ public class AgentManagerImpl implements AgentManager {
             agent.setId(id);
             conn.commit();
         } catch (SQLException ex) {
-            String msg = "Error when inserting grave into db";
+            String msg = "Error when inserting agent into db";
             logger.log(Level.SEVERE, msg, ex);
             throw new ServiceFailureException(msg, ex);
         } finally {
@@ -99,7 +99,7 @@ public class AgentManagerImpl implements AgentManager {
         checkDataSource();
         validate(agent);
         if (agent.getId() == null) {
-            throw new IllegalEntityException("grave id is null");
+            throw new IllegalEntityException("agent id is null");
         }
         Connection conn = null;
         PreparedStatement st = null;
@@ -131,10 +131,10 @@ public class AgentManagerImpl implements AgentManager {
     public void removeAgent(Agent agent) {
         checkDataSource();
         if (agent == null) {
-            throw new IllegalArgumentException("grave is null");
+            throw new IllegalArgumentException("agent is null");
         }
         if (agent.getId() == null) {
-            throw new IllegalEntityException("grave id is null");
+            throw new IllegalEntityException("agent id is null");
         }
         Connection conn = null;
         PreparedStatement st = null;
