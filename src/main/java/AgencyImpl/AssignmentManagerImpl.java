@@ -39,10 +39,10 @@ public class AssignmentManagerImpl implements AssignmentManager {
         if (assignment == null) {
             throw new IllegalArgumentException("agent is null");
         }
-        if (assignment.getAssignedAgent() == null) {
+        if (assignment.getAssignedAgentId() == null) {
             throw new ValidationException("assignment agent is null");
         }
-        if (assignment.getMission() == null) {
+        if (assignment.getMissionId() == null) {
             throw new ValidationException("mission is null");
         }
         if (assignment.getStart() == null) {
@@ -67,8 +67,8 @@ public class AssignmentManagerImpl implements AssignmentManager {
             st = conn.prepareStatement(
                     "INSERT INTO ASSIGNMENT (MISSION_ID,AGENT_ID,START, EXPECTED_END) VALUES (?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            st.setLong(1, newAssignment.getMission().getId());
-            st.setLong(2, newAssignment.getAssignedAgent().getId());
+            st.setLong(1, newAssignment.getMissionId());
+            st.setLong(2, newAssignment.getAssignedAgentId());
             st.setDate(3, java.sql.Date.valueOf(newAssignment.getStart()));
             st.setDate(4, java.sql.Date.valueOf(newAssignment.getExpectedEnd()));
 
@@ -103,8 +103,8 @@ public class AssignmentManagerImpl implements AssignmentManager {
             conn.setAutoCommit(false);
             st = conn.prepareStatement(
                     "UPDATE ASSIGNMENT SET MISSION_ID = ?, AGENT_ID = ?, START = ?, EXPECTED_END = ? WHERE ID = ?");
-            st.setLong(1, updatedAssignment.getMission().getId());
-            st.setLong(2, updatedAssignment.getAssignedAgent().getId());
+            st.setLong(1, updatedAssignment.getMissionId());
+            st.setLong(2, updatedAssignment.getAssignedAgentId());
             st.setDate(3, java.sql.Date.valueOf(updatedAssignment.getStart()));
             st.setDate(4, java.sql.Date.valueOf(updatedAssignment.getExpectedEnd()));
             st.setLong(5, updatedAssignment.getId());
@@ -194,8 +194,8 @@ public class AssignmentManagerImpl implements AssignmentManager {
     private static Assignment rowToAssignment(ResultSet rs) throws SQLException {
         Assignment result = new Assignment();
         result.setId(rs.getLong("ID"));
-        result.setAssignedAgent(rs.getLong("AGENT_ID"));
-        result.setMission(rs.getLong("MISSION_ID"));
+        result.setAssignedAgentId(rs.getLong("AGENT_ID"));
+        result.setMissionId(rs.getLong("MISSION_ID"));
         result.setStart(toLocalDate(rs.getDate("START")));
         result.setExpectedEnd(toLocalDate(rs.getDate("EXPECTED_END")));
         return result;

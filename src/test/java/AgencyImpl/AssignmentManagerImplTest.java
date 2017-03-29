@@ -112,12 +112,12 @@ public class AssignmentManagerImplTest {
 
     @Test
     public void updateAssignmentAgent() {
-        testUpdateAssignment((assignment) -> assignment.setAssignedAgent(AgentManagerImplTest.ultraAgentBuilder().build()));
+        testUpdateAssignment((assignment) -> assignment.setAssignedAgentId(AgentManagerImplTest.ultraAgentBuilder().id(10L).build().getId()));
     }
 
     @Test
     public void updateAssignmentMission() {
-        testUpdateAssignment((assignment) -> assignment.setMission(MissionManagerImplTest.ultraMissionBuilder().build()));
+        testUpdateAssignment((assignment) -> assignment.setMissionId(MissionManagerImplTest.ultraMissionBuilder().id(10L).build().getId()));
     }
 
     @Test
@@ -155,8 +155,8 @@ public class AssignmentManagerImplTest {
     private AssignmentBuilder ruthlessAssignmentBuilder() {
         return new AssignmentBuilder()
                 .id(null)
-                .agent(AgentManagerImplTest.ruthlessAgentBuilder().id(1L).build())
-                .mission(MissionManagerImplTest.ruthlessMissionBuilder().id(1L).build())
+                .agent(AgentManagerImplTest.ruthlessAgentBuilder().id(1L).build().getId())
+                .mission(MissionManagerImplTest.ruthlessMissionBuilder().id(1L).build().getId())
                 .start(LocalDate.of(1940, 9, 3))
                 .expectedEnd(LocalDate.of(1941, 9, 3));
     }
@@ -164,8 +164,8 @@ public class AssignmentManagerImplTest {
     private AssignmentBuilder ultraAssignmentBuilder() {
         return new AssignmentBuilder()
                 .id(null)
-                .agent(AgentManagerImplTest.ultraAgentBuilder().id(2L).build())
-                .mission(MissionManagerImplTest.ultraMissionBuilder().id(2L).build())
+                .agent(AgentManagerImplTest.ultraAgentBuilder().id(2L).build().getId())
+                .mission(MissionManagerImplTest.ultraMissionBuilder().id(2L).build().getId())
                 .start(LocalDate.of(1941, 6, 2))
                 .expectedEnd(LocalDate.of(1943, 6, 2));
     }

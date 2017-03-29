@@ -8,8 +8,8 @@ import java.time.LocalDate;
 
 public class Assignment {
     private Long id;
-    private Mission mission;
-    private Agent assignedAgent;
+    private Long missionId;
+    private Long assignedAgentId;
     private LocalDate start;
     private LocalDate expectedEnd;
 
@@ -21,20 +21,20 @@ public class Assignment {
         this.id = id;
     }
 
-    public Mission getMission() {
-        return mission;
+    public Long getMissionId() {
+        return missionId;
     }
 
-    public void setMission(Mission mission) {
-        this.mission = mission;
+    public void setMissionId(Long missionId) {
+        this.missionId = missionId;
     }
 
-    public Agent getAssignedAgent() {
-        return assignedAgent;
+    public Long getAssignedAgentId() {
+        return assignedAgentId;
     }
 
-    public void setAssignedAgent(Agent assignedAgent) {
-        this.assignedAgent = assignedAgent;
+    public void setAssignedAgentId(Long assignedAgentId) {
+        this.assignedAgentId = assignedAgentId;
     }
 
     public LocalDate getStart() {
