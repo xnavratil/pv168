@@ -6,4 +6,5 @@ test-output
 *.iml
 *~
 target
-database
+derby.log
+database/

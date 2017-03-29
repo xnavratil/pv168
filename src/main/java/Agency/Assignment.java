@@ -6,19 +6,12 @@ import java.time.LocalDate;
  * Created by Navratil Peter (xnavrat8@mail.muni.cz) on ${DATE}.
  */
 
-public class Assign {
+public class Assignment {
     private Long id;
-    private Mission mission;
-    private Agent assignedAgents;
+    private Long missionId;
+    private Long assignedAgentId;
     private LocalDate start;
     private LocalDate expectedEnd;
-
-    public Assign(Mission mission, Agent assignedAgents, LocalDate start, LocalDate expectedEnd) {
-        this.mission = mission;
-        this.assignedAgents = assignedAgents;
-        this.start = start;
-        this.expectedEnd = expectedEnd;
-    }
 
     public Long getId() {
         return id;
@@ -28,20 +21,20 @@ public class Assign {
         this.id = id;
     }
 
-    public Mission getMission() {
-        return mission;
+    public Long getMissionId() {
+        return missionId;
     }
 
-    public void setMission(Mission mission) {
-        this.mission = mission;
+    public void setMissionId(Long missionId) {
+        this.missionId = missionId;
     }
 
-    public Agent getAssignedAgents() {
-        return assignedAgents;
+    public Long getAssignedAgentId() {
+        return assignedAgentId;
     }
 
-    public void setAssignedAgents(Agent assignedAgents) {
-        this.assignedAgents = assignedAgents;
+    public void setAssignedAgentId(Long assignedAgentId) {
+        this.assignedAgentId = assignedAgentId;
     }
 
     public LocalDate getStart() {
