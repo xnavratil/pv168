@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.util.function.Consumer;
 import Utils.DBUtils;
 import org.junit.*;
-import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 

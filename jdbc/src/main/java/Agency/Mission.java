@@ -12,13 +12,16 @@ public class Mission {
     private String info;
     private LocalDate issueDate;
 
-/*
-    public Mission(String codename, String info, LocalDate issueDate) {
+    public Mission() {
+    }
+
+    public Mission(Long id, String codename, String info, LocalDate issueDate) {
+        this.id = id;
         this.codename = codename;
         this.info = info;
         this.issueDate = issueDate;
     }
-*/
+
 
     public Long getId() { return id; }
 

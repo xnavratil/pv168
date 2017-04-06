@@ -27,6 +27,12 @@ public class MissionManagerImpl implements MissionManager {
 
     private DataSource dataSource;
 
+    public MissionManagerImpl() {}
+
+    public MissionManagerImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }

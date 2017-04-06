@@ -30,6 +30,11 @@ public class AgentManagerImpl implements AgentManager {
 
     private DataSource dataSource;
 
+    public AgentManagerImpl() {}
+
+    public AgentManagerImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
