@@ -23,7 +23,14 @@ import java.util.logging.Logger;
 public class AssignmentManagerImpl implements AssignmentManager {
     private static final Logger logger = Logger.getLogger(
             AssignmentManagerImpl.class.getName());
+
     private DataSource dataSource;
+
+    public AssignmentManagerImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public AssignmentManagerImpl(){};
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;

@@ -9,6 +9,15 @@ public class Agent {
     private LocalDate born;
     private LocalDate recruitmentDate;
 
+    public Agent() {}
+
+    public Agent(Long id, String name, LocalDate born, LocalDate recruitmentDate) {
+        this.id = id;
+        this.name = name;
+        this.born = born;
+        this.recruitmentDate = recruitmentDate;
+    }
+
     public Long getId() {
         return id;
     }
@@ -39,5 +48,15 @@ public class Agent {
 
     public void setRecruitmentDate(LocalDate recruitmentDate) {
         this.recruitmentDate = recruitmentDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Agent{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", born=" + born +
+                ", recruitmentDate=" + recruitmentDate +
+                '}';
     }
 }

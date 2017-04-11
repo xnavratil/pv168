@@ -28,8 +28,14 @@ public class AgentManagerImpl implements AgentManager {
     private static final Logger logger = Logger.getLogger(
             AgentManagerImpl.class.getName());
 
+
     private DataSource dataSource;
 
+    public AgentManagerImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public AgentManagerImpl(){};
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;

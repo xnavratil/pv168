@@ -5,6 +5,9 @@ test-output
 .classpath
 *.iml
 *~
-target
-derby.log
-database/
+agency-jdbc/target
+agency-jdbc/database
+agency-jdbc/.idea
+agency-jdbc/derby.log
+agency-web/target
+agency-web/.idea
