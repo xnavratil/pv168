@@ -22,7 +22,7 @@
     </c:forEach>
 </table>
 
-<h2>Zadejte knihu</h2>
+<h2>Zadajte misiu</h2>
 <c:if test="${not empty chyba}">
     <div style="border: solid 1px red; background-color: yellow; padding: 10px">
         <c:out value="${chyba}"/>

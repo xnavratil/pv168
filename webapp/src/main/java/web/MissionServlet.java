@@ -1,7 +1,6 @@
 package web;
 
 import Agency.Mission;
-import Exceptions.MissionException;
 import Agency.MissionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,18 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet(MissionServlet.URL_MAPPING + "/*")
 public class MissionServlet extends HttpServlet {
     private static final String LIST_JSP = "/list.jsp";
-    public static final String URL_MAPPING = "/agency";
+    public static final String URL_MAPPING = "/mission";
 
     private final static Logger log = LoggerFactory.getLogger(MissionServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("GET ...");
-        showBooksList(request, response);
+        showMissionsList(request, response);
     }
 
     @Override
@@ -40,17 +40,25 @@ public class MissionServlet extends HttpServlet {
                 //getting POST parameters from form
                 String codename = request.getParameter("codename");
                 String info = request.getParameter("info");
-                LocalDate date = LocalDate.parse(request.getParameter("issueDate"));
-                //form data validity check
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate issueDate;
+                try {
+                    issueDate = LocalDate.parse(request.getParameter("issueDate"), formatter);
+                } catch (java.time.format.DateTimeParseException ex) {
+                    request.setAttribute("chyba", "Date is not in valid format!");
+                    log.debug("form data invalid");
+                    showMissionsList(request, response);
+                    return;
+                }
                 if (codename == null || codename.length() == 0
-                        || info == null || info.length() == 0 || date == null) {
+                        || info == null || info.length() == 0 || issueDate == null) {
                     request.setAttribute("chyba", "Je nutné vyplnit všechny hodnoty !");
                     log.debug("form data invalid");
-                    showBooksList(request, response);
+                    showMissionsList(request, response);
                     return;
                 }
                /* try {*/
-                    Mission mission = new Mission(null, codename, info, date);
+                    Mission mission = new Mission(null, codename, info, issueDate);
                     getMissionManager().createMission(mission);
                     //redirect-after-POST protects from multiple submission
                     log.debug("redirecting after POST");
@@ -94,7 +102,7 @@ public class MissionServlet extends HttpServlet {
     /**
      * Stores the list of books to request attribute "mission" and forwards to the JSP to display it.
      */
-    private void showBooksList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showMissionsList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /*try {*/
             log.debug("showing table of mission");
             request.setAttribute("mission", getMissionManager().getAllMissions());
